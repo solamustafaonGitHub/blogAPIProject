@@ -28,6 +28,11 @@ const articleShemaModel = new Schema({
         default: Date.now
     },
 
+    updated_at: {
+        type: Date,
+        default: Date.now,
+    },
+
     state: {
         type: String,
         default: 'draft'
@@ -42,12 +47,7 @@ const articleShemaModel = new Schema({
         type: Date,
         default: Date.now,
     },
-
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-
+    
     body: {
         type: String,
     }
