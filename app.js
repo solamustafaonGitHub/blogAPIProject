@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 //importing the connectToMongoDB function from the db.js file
 const {connectToMongoDB} = require('./dbconnection'); 
 
-//importing the articleRoute from the article.js file
+// ARTICLE || importing the articleRoute from the article.js file
 const articleRoute = require('./routes/articles.js'); 
+// USER || importing the userRoute from the user.js file
+const userRoute = require('./routes/users.js');
 
 //this will load all the environment variables from the .env file into the process.env object
 require('dotenv').config(); 
@@ -26,8 +28,10 @@ app.use(bodyParser.json());
 
 //this is a middleware that will parse all incoming requests to JSON
 app.use(express.json());
-//this is the middleware that will handle all the requests to the /articles route')
+//ARTICLE || this is the middleware that will handle all the requests to the /articles route')
 app.use('/articles', articleRoute); 
+//USER || this is the middleware that will handle all the requests to the /users route')
+app.use('/users', userRoute);
 
 //setting the view engine to ejs
 app.set('view engine', 'ejs');

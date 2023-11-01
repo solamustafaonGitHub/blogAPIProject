@@ -8,7 +8,7 @@ const articleShemaModel = new Schema({
     title: {
         type: String,
         required: true, 
-        unique: true
+        unique: [true, "Blog Title already exists"],
     },
 
     description: {

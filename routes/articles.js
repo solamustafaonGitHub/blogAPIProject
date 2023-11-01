@@ -15,21 +15,24 @@ articleRoute.get('/', (req, res) => {
     }) 
     .catch((err) => {
         console.log(err);
-        res.send(err);
+        res.send(err.message);
     }); 
 });
 
 //Read one article by Id || Find and return one article by ID
-    articleRoute.get('/:id', (req, res) => {
+articleRoute.get('/:id', (req, res) => {
     const id = req.params.id;
+    console.log(id);
+    // Find and return one article by ID
     articleModel.findById(id)
-    .then((article) => {
-     res.status(200).send(article);
-      })
-    .catch((err) => {
-        res.status(500).send(err); // Adjust the status and message as needed
+      .then((article) => {
+        res.status(200).send(article);
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).send('Internal server error: ' + err.message); // Include the error message in the response
       });
   });
+  
   
 
 //2. Create One Article
@@ -53,22 +56,21 @@ articleRoute.post('/', (req, res) => {
 //3. Update One Article
 articleRoute.put('/:id', (req, res) => {
     const id = req.params.id;
-    const article = req.body;
-   
-    //Perform update operation to article collection in the database
-    articleModel.findByIdAndUpdate(id, article, {new: true})
-    .then((article) => {
-        res.status(200).send(article);
-    }).catch((err) => {
-        console.log(err)
-        res.status(400).send(err)
+    const updatedArticle = req.body;
+    // Perform the update operation on the article collection in the database
+    articleModel.findByIdAndUpdate(id, updatedArticle, { new: true })
+      .then((article) => {
+                res.status(200).send(article);
+            }).catch((err) => {
+                console.log(err)
+                res.status(500).send(err)
+                    });
             });
-    });
 
 //4. Delete One Article
 articleRoute.delete('/:id', (req, res) => {
     const id = req.params.id;
-//Perform update operation to article collection in the database
+//Perform delete operation to article collection in the database
     articleModel.findByIdAndDelete(id)
     .then(() => {
         res.status(200).send({
@@ -78,7 +80,7 @@ articleRoute.delete('/:id', (req, res) => {
         
     }).catch((err) => {
         console.log(err)
-        res.status(400).send(err)
+        res.status(500).send(err)
             });
     });
 
