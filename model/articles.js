@@ -15,6 +15,7 @@ const articleShemaModel = new Schema({
         type: String,
     },
 
+    
     tags:{
     type: [Array],
     },
@@ -53,6 +54,8 @@ const articleShemaModel = new Schema({
     }
 
 })
+
+
 
 //collection name is articles. This is the name of the collection in the database.
 module.exports = mongoose.model('articles', articleShemaModel); 
