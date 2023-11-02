@@ -1,42 +1,20 @@
-const mongoose = require('mongoose');
+//imports mongoose
+const moogoose = require('mongoose');
+//imports passport-local-mongoose
+const passportLocalMongoose = require('passport-local-mongoose');
 
-//define a schema
-const Schema = mongoose.Schema;
+//creates a new schema for the user
+const userSchemaModel = new moogoose.Schema({
+    username: String,
+    password: String
+})
 
-//define the user schema attributes
-const userSchemaModel = new Schema({
-    first_name: {
-        type: String,
-        required: true, 
-    },
-
-    last_name: {
-        type: String,
-        required: true, 
-    },
-
-    email: {
-        type: String,
-        required: true, 
-        unique: [true, "Email already exists"],
-    },
-
-    password: {
-        type: String,
-        required: true, 
-    },
-
-    timestamp: {
-        type: Date,
-        default: Date.now
-    },
-
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-
-}); 
+// Automatically handles hashing and salting of passwords
+// and adds the following properties to the user object:
+//   - password
+//   - salt
+//   - hash
+userModel.plugin(passportLocalMongoose)
 
 //collection name is users. This is the name of the collection in the database.
-module.exports = mongoose.model('users', userSchemaModel);
+module.exports = moogoose.model('users', userSchemaModel);

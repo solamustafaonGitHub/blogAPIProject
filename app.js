@@ -4,11 +4,10 @@ const express = require('express');
 const bodyParser = require('body-parser'); 
 //importing the connectToMongoDB function from the db.js file
 const {connectToMongoDB} = require('./dbconnection'); 
-
-// ARTICLE || importing the articleRoute from the article.js file
-const articleRoute = require('./routes/articles.js'); 
-// USER || importing the userRoute from the user.js file
-const userRoute = require('./routes/users.js');
+//authentication
+const passport = require('passport');
+const connectEnsureLogin = require('connect-ensure-login');
+const session = require('express-session'); //session middleware
 
 //this will load all the environment variables from the .env file into the process.env object
 require('dotenv').config(); 
@@ -21,6 +20,24 @@ const app = express();
 
 //calling the connectToMongoDB function to connect to the MongoDB database
 connectToMongoDB(); 
+
+// USER || importing the user Model from the user.js file
+const userModel = require('./model/users.js');
+
+// Configure the app to use sessions
+// Session is a way to store data on the server between requests
+// so that we can access it on subsequent requests
+// in this case, we are storing the authenticated user id for the duration of the session
+// so that we can access it on subsequent requests
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { maxAge: 60 * 60 * 1000 } // 1 hour
+}));
+
+// ARTICLE || importing the articleRoute from the article.js file
+const articleRoute = require('./routes/articles.js'); 
 
 //setting the middlewares for the express app
 app.use(express.static('public'));
